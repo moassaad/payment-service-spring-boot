@@ -1,4 +1,4 @@
-# Payment Service API Documentation
+# Payment Service API Documentation (Dory Pay)
 
 ---
 
