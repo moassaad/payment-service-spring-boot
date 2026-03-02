@@ -321,3 +321,15 @@ Possible payment statuses:
 - failure
 - pending
 - refunded
+
+---
+
+## Resource Images
+
+### 1. C4 Context Diagram
+
+![C4 Context Diagram](./resources/c4-context-diagram.png)
+
+### 2. Entity Diagram
+
+![Entity Diagram](./resources/entity-diagram.png)
