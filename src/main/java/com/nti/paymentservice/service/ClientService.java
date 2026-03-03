@@ -6,11 +6,14 @@ import com.nti.paymentservice.exception.ClientAlreadyExistsException;
 import com.nti.paymentservice.exception.ClientNotFoundException;
 import com.nti.paymentservice.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ClientService {
@@ -22,6 +25,7 @@ public class ClientService {
         Optional<ClientEntity> clientEntity = clientRepository.findByUsernameAndPassword(username, password);
 
         if (clientEntity.isPresent()) {
+            log.warn("username username={} already exists ", username);
             throw new ClientAlreadyExistsException("username already exists");
         }
 
@@ -30,10 +34,15 @@ public class ClientService {
         newClient.setUsername(username);
         newClient.setPassword(password);
         newClient.setApiKey(UUID.randomUUID());
+
+        log.info("set new client app client={} ", newClient.getUsername());
+
         clientRepository.save(newClient);
 
         ClientAuthDto clientAuthDto = new ClientAuthDto();
         clientAuthDto.setApiKey(newClient.getApiKey());
+
+        log.info("add client successfuly client={} ", newClient.getUsername());
 
         return clientAuthDto;
     }
