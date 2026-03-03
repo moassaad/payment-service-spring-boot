@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
-public class GlobalHandleExcepion {
+public class GlobalHandleException {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleGlobalException(MethodArgumentNotValidException ex){
