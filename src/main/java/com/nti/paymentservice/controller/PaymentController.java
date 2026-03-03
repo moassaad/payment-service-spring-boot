@@ -41,8 +41,8 @@ public class PaymentController {
         }
 
         try {
-            PaymentEntity refundedPayment = refundService.refundPayment(paymentId, apiKey);
-            return ResponseEntity.ok(refundedPayment);  // Return 200 OK with refunded payment details
+            PaymentEntity refundedPayment = refundService.refundPayment(paymentId);
+            return ResponseEntity.ok(refundedPayment);
 
         } catch (Exception e) {
             throw e;
