@@ -13,24 +13,25 @@ import java.time.LocalDate;
 public class PaymentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long paymentId; // Unique identifier for each status record
+    private Long paymentId;
 
     @Enumerated(EnumType.STRING)
-    private PaymentStatus status; // Enum for status values (success, failure, pending, refunded)
+    private PaymentStatus status;
 
     @Column(name = "order_id")
-    private Long orderId; // ID for the order associated with this status
+    private Long orderId;
 
     @Column(name = "customer_id")
-    private Long customerId; // ID for the customer associated with this order
-    @Column(name = "client_id")
-    private String clientId; // ID for the client associated with this order
+    private Long customerId;
 
-    private Double amount; // Amount associated with the order status
+    @Column(name = "client_id")
+    private String clientId;
+
+    private Double amount;
 
     @Column(name = "processed_at")
-    private LocalDate processedAt; // Date when the status was processed
+    private LocalDate processedAt;
 
     @Column(name = "created_at")
-    private LocalDate createdAt; // Date when the status was created
+    private LocalDate createdAt;
 }
