@@ -32,5 +32,17 @@ public class GlobalControllerAdvice {
         error.setMessage(exception.getMessage());
         return ResponseEntity.badRequest().body(error);
     }
+    @ExceptionHandler(PaymentNotFoundException.class)
+    public ResponseEntity<?> handleMissingHeader(PaymentNotFoundException exception){
+        ErrorHandling error = new ErrorHandling();
+        error.setMessage(exception.getMessage());
+        return ResponseEntity.badRequest().body(error);
+    }
+    @ExceptionHandler(PaymentRefundException.class)
+    public ResponseEntity<?> handleMissingHeader(PaymentRefundException exception){
+        ErrorHandling error = new ErrorHandling();
+        error.setMessage(exception.getMessage());
+        return ResponseEntity.badRequest().body(error);
+    }
 
 }
