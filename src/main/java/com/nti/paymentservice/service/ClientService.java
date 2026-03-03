@@ -15,13 +15,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ClientService {
 
-    private  final ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
 
     public ClientAuthDto register(String username, String password) throws Exception {
 
-        Optional<ClientEntity> clientEntity = clientRepository.findByUsernameAndPassword(username,password);
+        Optional<ClientEntity> clientEntity = clientRepository.findByUsernameAndPassword(username, password);
 
-        if(clientEntity.isPresent()){
+        if (clientEntity.isPresent()) {
             throw new ClientAlreadyExistsException("username already exists");
         }
 
@@ -38,11 +38,11 @@ public class ClientService {
         return clientAuthDto;
     }
 
-    public  ClientAuthDto login(String username, String password) throws Exception {
+    public ClientAuthDto login(String username, String password) throws Exception {
 
-        Optional<ClientEntity> clientEntity = clientRepository.findByUsernameAndPassword(username,password);
+        Optional<ClientEntity> clientEntity = clientRepository.findByUsernameAndPassword(username, password);
 
-        if(clientEntity.isEmpty()){
+        if (clientEntity.isEmpty()) {
             throw new ClientNotFoundException("client not found");
         }
 
@@ -53,17 +53,13 @@ public class ClientService {
 
     }
 
-    public void existsByApiKey(UUID apiKey){
+    public void existsByApiKey(UUID apiKey) {
 
         boolean existsClient = clientRepository.existsByApiKey(apiKey);
 
-        // run exception if not exists apikey at db
-        if(!existsClient){
+        if (!existsClient) {
             throw new ClientNotFoundException("client not found");
         }
-
-        //make nothing if exists
-
     }
 
 }

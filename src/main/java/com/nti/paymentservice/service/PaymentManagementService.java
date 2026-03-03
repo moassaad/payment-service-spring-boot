@@ -17,7 +17,6 @@ public class PaymentManagementService {
 
     private final PaymentRepository paymentRepository;
 
-    // ✅ 4. List Customer Payments
     public List<PaymentResponse> getCustomerPayments(Long customerId, String status) {
 
         List<PaymentEntity> payments;
@@ -29,7 +28,6 @@ public class PaymentManagementService {
             try {
                 paymentStatus = PaymentStatus.valueOf(status.toUpperCase());
             } catch (IllegalArgumentException e) {
-                // ✅ Use your custom exception
                 throw new PaymentStatusException(status);
             }
 
@@ -51,7 +49,6 @@ public class PaymentManagementService {
                 .collect(Collectors.toList());
     }
 
-    // ✅ 5. Get Payment Details
     public PaymentResponse getPaymentById(Long id) {
 
         if (id == null) {
@@ -65,7 +62,6 @@ public class PaymentManagementService {
         return mapToResponse(payment);
     }
 
-    // ✅ Mapper Method
     private PaymentResponse mapToResponse(PaymentEntity payment) {
 
         PaymentResponse response = new PaymentResponse();

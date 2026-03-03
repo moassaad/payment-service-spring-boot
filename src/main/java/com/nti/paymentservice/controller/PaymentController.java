@@ -34,7 +34,6 @@ public class PaymentController {
             throw new ClientNotFoundException("API Key is required");
         }
 
-        // validate api key
         if (!API_KEY.equals(apiKey)) {
             throw new ClientNotFoundException("invalid api key");
         }
