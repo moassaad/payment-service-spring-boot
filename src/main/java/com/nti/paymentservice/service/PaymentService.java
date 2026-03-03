@@ -1,7 +1,6 @@
 package com.nti.paymentservice.service;
 
 import com.nti.paymentservice.dto.PaymentRequest;
-import com.nti.paymentservice.dto.PaymentResponse;
 import com.nti.paymentservice.entity.PaymentEntity;
 import com.nti.paymentservice.entity.PaymentStatus;
 import com.nti.paymentservice.repository.PaymentRepository;
@@ -19,8 +18,8 @@ public class PaymentService {
     public PaymentEntity createPayment(@Valid PaymentRequest paymentRequest, String apiKey) {
         // TODO Auth
 
-
-        boolean ex = paymentRepository.existsByCustomerIdAndOrderIdAndClientId(paymentRequest.getCustomerId(),paymentRequest.getOrderId(),apiKey);
+        boolean ex = paymentRepository.existsByCustomerIdAndOrderIdAndClientId(paymentRequest.getCustomerId(),
+                paymentRequest.getOrderId(), apiKey);
 
         PaymentEntity paymentEntity = new PaymentEntity();
         paymentEntity.setCustomerId(paymentRequest.getCustomerId());
@@ -32,11 +31,9 @@ public class PaymentService {
         paymentEntity.setCreatedAt(LocalDate.now());
         paymentEntity.setClientId(apiKey);
 
-
-
-        if(ex){
+        if (ex) {
             paymentEntity.setPaymentId(12345645L);
-            return  paymentEntity;
+            return paymentEntity;
         }
         return paymentRepository.save(paymentEntity);
 

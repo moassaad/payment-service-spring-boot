@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @Validated
@@ -29,12 +28,12 @@ public class PaymentController {
     private static final String API_KEY = "dfyuf-nfdfsh-nfnfh-fdjdhjf";
 
     @PostMapping("")
-    public PaymentEntity createPayment(@RequestHeader("apikey") String apiKey, @RequestBody @Valid PaymentRequest paymentRequest) {
+    public PaymentEntity createPayment(@RequestHeader("apikey") String apiKey,
+            @RequestBody @Valid PaymentRequest paymentRequest) {
         if (apiKey == null || apiKey.isEmpty()) {
             throw new ClientNotFoundException("API Key is required");
         }
 
-        // validate api key
         if (!API_KEY.equals(apiKey)) {
             throw new ClientNotFoundException("invalid api key");
         }
@@ -43,7 +42,8 @@ public class PaymentController {
     }
 
     @PostMapping("/{id}/refund")
-    public ResponseEntity<Object> refundPayment(@RequestHeader("apikey") String apiKey, @PathVariable("id") Long paymentId) {
+    public ResponseEntity<Object> refundPayment(@RequestHeader("apikey") String apiKey,
+            @PathVariable("id") Long paymentId) {
         if (apiKey == null || apiKey.isEmpty()) {
             throw new ClientNotFoundException("API Key is required");
         }
@@ -59,17 +59,17 @@ public class PaymentController {
             throw e;
         }
 
-        PaymentEntity refundedPayment = refundService.refundPayment(paymentId, apiKey);
-        return ResponseEntity.ok(refundedPayment);  // Return 200 OK with refunded payment details
+        // PaymentEntity refundedPayment = refundService.refundPayment(paymentId,
+        // apiKey);
+        // return ResponseEntity.ok(refundedPayment); // Return 200 OK with refunded
+        // payment details
     }
-
 
     @GetMapping("/{customerId}")
     public ResponseEntity<?> listCustomerPayments(
             @RequestHeader("apikey") String apiKey,
             @PathVariable @Positive(message = "customerID must be positive") Long customerId,
-            @RequestParam(required = false) String status
-    ) {
+            @RequestParam(required = false) String status) {
 
         if (apiKey == null || apiKey.isEmpty()) {
             throw new ClientNotFoundException("API Key is required");
@@ -83,13 +83,10 @@ public class PaymentController {
         return ResponseEntity.ok(payments);
     }
 
-
-
     @GetMapping("/details/{id}")
     public ResponseEntity<?> getPaymentDetails(
             @RequestHeader("apikey") String apiKey,
-            @PathVariable @Positive(message = "id must be positive") Long id
-    ) {
+            @PathVariable @Positive(message = "id must be positive") Long id) {
 
         if (apiKey == null || apiKey.isEmpty()) {
             throw new ClientNotFoundException("API Key is required");
