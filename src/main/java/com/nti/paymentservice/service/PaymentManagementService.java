@@ -3,14 +3,18 @@ package com.nti.paymentservice.service;
 import com.nti.paymentservice.dto.PaymentResponse;
 import com.nti.paymentservice.entity.PaymentEntity;
 import com.nti.paymentservice.entity.PaymentStatus;
+import com.nti.paymentservice.exception.PaymentNotFoundException;
 import com.nti.paymentservice.exception.PaymentStatusException;
 import com.nti.paymentservice.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PaymentManagementService {
@@ -40,10 +44,9 @@ public class PaymentManagementService {
         }
 
         if (payments == null || payments.isEmpty()) {
-            throw new com.nti.paymentservice.exception.PaymentNotFoundException(
-                    "No payments found for customer id: " + customerId);
+            throw new PaymentNotFoundException("No payments found for customer id: " + customerId);
         }
-
+        log.info("payment list customer customerId={} count is count={} ", customerId, payments.size());
         return payments.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
@@ -54,11 +57,12 @@ public class PaymentManagementService {
         if (id == null) {
             throw new IllegalArgumentException("Payment ID cannot be null");
         }
-
         PaymentEntity payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new com.nti.paymentservice.exception.PaymentNotFoundException(
-                        "no payment exists with id: " + id));
+                .orElseThrow(() -> {
+                    return new PaymentNotFoundException("no payment exists with id: " + id);
+                });
 
+        log.info("find payment by id id={} ", payment.getPaymentId());
         return mapToResponse(payment);
     }
 

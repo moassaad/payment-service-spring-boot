@@ -6,17 +6,20 @@ import com.nti.paymentservice.entity.PaymentStatus;
 import com.nti.paymentservice.repository.PaymentRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PaymentService {
     public final PaymentRepository paymentRepository;
 
-    public PaymentEntity createPayment(@Valid PaymentRequest paymentRequest, String apiKey) {
-        // TODO Auth
+    public PaymentEntity createPayment(@RequestBody @Valid PaymentRequest paymentRequest, String apiKey) {
 
         boolean ex = paymentRepository.existsByCustomerIdAndOrderIdAndClientId(paymentRequest.getCustomerId(),
                 paymentRequest.getOrderId(), apiKey);
@@ -32,10 +35,20 @@ public class PaymentService {
         paymentEntity.setClientId(apiKey);
 
         if (ex) {
-            paymentEntity.setPaymentId(12345645L);
-            return paymentEntity;
+            PaymentEntity payment = paymentRepository.findByCustomerIdAndOrderIdAndClientId(
+                    paymentEntity.getCustomerId(),
+                    paymentEntity.getOrderId(), apiKey);
+            log.warn("payment alrady exists payment id={}.", payment.getPaymentId());
+            return payment;
+            // paymentEntity.setPaymentId(12345645L);
+            // return paymentEntity;
         }
-        return paymentRepository.save(paymentEntity);
+
+        PaymentEntity payment = paymentRepository.save(paymentEntity);
+
+        log.info("payment created id={}", payment.getPaymentId());
+
+        return payment;
 
     }
 }
