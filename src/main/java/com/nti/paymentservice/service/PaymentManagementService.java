@@ -42,7 +42,8 @@ public class PaymentManagementService {
         }
 
         if (payments == null || payments.isEmpty()) {
-            throw new com.nti.paymentservice.exception.PaymentNotFoundException("No payments found for customer id: " + customerId);
+            throw new com.nti.paymentservice.exception.PaymentNotFoundException(
+                    "No payments found for customer id: " + customerId);
         }
 
         return payments.stream()
@@ -53,8 +54,13 @@ public class PaymentManagementService {
     // ✅ 5. Get Payment Details
     public PaymentResponse getPaymentById(Long id) {
 
+        if (id == null) {
+            throw new IllegalArgumentException("Payment ID cannot be null");
+        }
+
         PaymentEntity payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new com.nti.paymentservice.exception.PaymentNotFoundException("no payment exists with id: " + id));
+                .orElseThrow(() -> new com.nti.paymentservice.exception.PaymentNotFoundException(
+                        "no payment exists with id: " + id));
 
         return mapToResponse(payment);
     }

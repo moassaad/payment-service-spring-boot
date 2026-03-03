@@ -1,7 +1,5 @@
 package com.nti.paymentservice.exception;
 
-
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class PaymentRefundException extends RuntimeException  {
+public class PaymentRefundException extends RuntimeException {
     private String message;
 }
