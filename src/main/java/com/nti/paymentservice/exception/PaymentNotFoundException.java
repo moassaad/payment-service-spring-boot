@@ -1,15 +1,16 @@
 package com.nti.paymentservice.exception;
 
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+/**
+ * Thrown when a requested payment (or payments) cannot be found.
+ */
+public class PaymentNotFoundException extends RuntimeException {
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
-@Getter
-public class PaymentNotFoundException extends RuntimeException  {
-    private String message;
+    public PaymentNotFoundException() {
+        super("Payment not found");
+    }
+
+    public PaymentNotFoundException(String message) {
+        super(message);
+    }
+
 }

@@ -3,6 +3,7 @@ package com.nti.paymentservice.service;
 import com.nti.paymentservice.dto.PaymentResponse;
 import com.nti.paymentservice.entity.PaymentEntity;
 import com.nti.paymentservice.entity.PaymentStatus;
+import com.nti.paymentservice.exception.PaymentStatusException;
 import com.nti.paymentservice.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,20 +23,26 @@ public class PaymentManagementService {
         List<PaymentEntity> payments;
 
         if (status != null && !status.isBlank()) {
+
+            PaymentStatus paymentStatus;
+
             try {
-                PaymentStatus paymentStatus = PaymentStatus.valueOf(status.toUpperCase());
-                payments = paymentRepository
-                        .findByCustomerIdAndStatus(customerId, paymentStatus);
+                paymentStatus = PaymentStatus.valueOf(status.toUpperCase());
             } catch (IllegalArgumentException e) {
-                throw new RuntimeException("Invalid payment status: " + status);
+                // ✅ Use your custom exception
+                throw new PaymentStatusException(status);
             }
+
+            payments = paymentRepository
+                    .findByCustomerIdAndStatus(customerId, paymentStatus);
+
         } else {
             payments = paymentRepository
                     .findByCustomerId(customerId);
         }
 
-        if (payments.isEmpty()) {
-            throw new RuntimeException("no customer exists");
+        if (payments == null || payments.isEmpty()) {
+            throw new com.nti.paymentservice.exception.PaymentNotFoundException("No payments found for customer id: " + customerId);
         }
 
         return payments.stream()
@@ -47,7 +54,7 @@ public class PaymentManagementService {
     public PaymentResponse getPaymentById(Long id) {
 
         PaymentEntity payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("no payment exists"));
+                .orElseThrow(() -> new com.nti.paymentservice.exception.PaymentNotFoundException("no payment exists with id: " + id));
 
         return mapToResponse(payment);
     }
@@ -61,7 +68,11 @@ public class PaymentManagementService {
         response.setStatus(payment.getStatus().name());
         response.setOrderId(payment.getOrderId());
         response.setCustomerId(payment.getCustomerId());
-        response.setAmount(java.math.BigDecimal.valueOf(payment.getAmount()));
+
+        if (payment.getAmount() != null) {
+            response.setAmount(java.math.BigDecimal.valueOf(payment.getAmount()));
+        }
+
         response.setProcessedAt(payment.getProcessedAt());
         response.setCreatedAt(payment.getCreatedAt());
 
