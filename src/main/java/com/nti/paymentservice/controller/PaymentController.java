@@ -51,6 +51,13 @@ public class PaymentController {
         if (!API_KEY.equals(apiKey)) {
             throw new ClientNotFoundException("invalid api key");
         }
+        try {
+            PaymentEntity refundedPayment = refundService.refundPayment(paymentId);
+            return ResponseEntity.ok(refundedPayment);
+
+        } catch (Exception e) {
+            throw e;
+        }
 
         PaymentEntity refundedPayment = refundService.refundPayment(paymentId, apiKey);
         return ResponseEntity.ok(refundedPayment);  // Return 200 OK with refunded payment details
