@@ -19,5 +19,5 @@ public class ClientEntity {
     @Column(nullable = false, length = 100)
     private String password;
     @Column(nullable = false)
-    private UUID key;
+    private UUID apikey;
 }

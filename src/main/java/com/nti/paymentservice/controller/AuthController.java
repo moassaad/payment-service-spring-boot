@@ -1,4 +1,4 @@
-package com.nti.paymentservice.controllers;
+package com.nti.paymentservice.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
