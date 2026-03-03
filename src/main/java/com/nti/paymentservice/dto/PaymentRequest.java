@@ -4,9 +4,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PaymentRequest {
 
     @NotNull(message = "order_id is required")
@@ -22,7 +30,7 @@ public class PaymentRequest {
     @NotNull(message = "amount is required")
     @DecimalMin(value = "0.01", message = "amount must be greater than 0")
     @JsonProperty("amount")
-    private BigDecimal amount;
+    private Double amount;
 
     // Getters & Setters
 }

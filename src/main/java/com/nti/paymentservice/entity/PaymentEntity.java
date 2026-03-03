@@ -23,6 +23,8 @@ public class PaymentEntity {
 
     @Column(name = "customer_id")
     private Long customerId; // ID for the customer associated with this order
+    @Column(name = "client_id")
+    private String clientId; // ID for the client associated with this order
 
     private Double amount; // Amount associated with the order status
 

@@ -1,25 +1,54 @@
 package com.nti.paymentservice.controller;
 
 import com.nti.paymentservice.dto.PaymentResponse;
+import com.nti.paymentservice.dto.PaymentRequest;
 import com.nti.paymentservice.service.PaymentManagementService;
+import com.nti.paymentservice.service.RefundService;
+import com.nti.paymentservice.entity.PaymentEntity;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/payments")
+@RequestMapping("/api/v1/payments")
 @RequiredArgsConstructor
 public class PaymentController {
 
-    private final PaymentManagementService paymentService;
+    private final PaymentManagementService paymentManagementService;
+    private final PaymentService paymentService;
+    private final RefundService refundService;
 
     private static final String API_KEY = "dfyuf-nfdfsh-nfnfh-fdjdhjf";
 
-    // ✅ 4. List Customer Payments
+    @PostMapping("/")
+    public PaymentEntity createPayment(@RequestHeader("apikey") String apiKey, @RequestBody @Valid PaymentRequest paymentRequest) {
+        if (apiKey == null || apiKey.isEmpty()) {
+            throw new IllegalArgumentException("API Key is required");
+        }
+        return paymentService.createPayment(paymentRequest, apiKey);
+    }
+
+    @PostMapping("/{id}/refund")
+    public ResponseEntity<Object> refundPayment(@RequestHeader("apikey") String apiKey, @PathVariable("id") Long paymentId) {
+
+        if (apiKey == null || apiKey.isEmpty()) {
+            return ResponseEntity.badRequest().body("API Key is required");
+        }
+
+        try {
+            PaymentEntity refundedPayment = refundService.refundPayment(paymentId, apiKey);
+            return ResponseEntity.ok(refundedPayment);  // Return 200 OK with refunded payment details
+
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+
     @GetMapping("/{customerId}")
     public ResponseEntity<?> listCustomerPayments(
             @RequestHeader("apikey") String apiKey,
@@ -27,14 +56,13 @@ public class PaymentController {
             @RequestParam(required = false) String status
     ) {
 
-        // API KEY validation
         if (!API_KEY.equals(apiKey)) {
             return ResponseEntity.status(401)
                     .body(Map.of("message", "invalid api key"));
         }
 
         List<PaymentResponse> payments =
-                paymentService.getCustomerPayments(customerId, status);
+                paymentManagementService.getCustomerPayments(customerId, status);
 
         if (payments.isEmpty()) {
             return ResponseEntity.status(404)
@@ -45,7 +73,7 @@ public class PaymentController {
     }
 
 
-    // ✅ 5. Get Payment Details
+
     @GetMapping("/details/{id}")
     public ResponseEntity<?> getPaymentDetails(
             @RequestHeader("apikey") String apiKey,
@@ -57,7 +85,7 @@ public class PaymentController {
                     .body(Map.of("message", "invalid api key"));
         }
 
-        PaymentResponse payment = paymentService.getPaymentById(id);
+        PaymentResponse payment = paymentManagementService.getPaymentById(id);
 
         if (payment == null) {
             return ResponseEntity.status(404)
