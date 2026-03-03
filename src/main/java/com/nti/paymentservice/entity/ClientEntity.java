@@ -12,12 +12,12 @@ import java.util.UUID;
 @Setter
 public class ClientEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private String username;
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private String password;
     @Column(nullable = false)
-    private UUID apikey;
+    private UUID apiKey;
 }
