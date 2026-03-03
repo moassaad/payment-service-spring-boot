@@ -3,6 +3,7 @@ package com.nti.paymentservice.controller;
 import com.nti.paymentservice.dto.PaymentResponse;
 import com.nti.paymentservice.dto.PaymentRequest;
 import com.nti.paymentservice.service.PaymentManagementService;
+import com.nti.paymentservice.service.PaymentService;
 import com.nti.paymentservice.service.RefundService;
 import com.nti.paymentservice.entity.PaymentEntity;
 import jakarta.validation.constraints.Positive;
@@ -24,7 +25,7 @@ public class PaymentController {
 
     private static final String API_KEY = "dfyuf-nfdfsh-nfnfh-fdjdhjf";
 
-    @PostMapping("/")
+    @PostMapping("")
     public PaymentEntity createPayment(@RequestHeader("apikey") String apiKey, @RequestBody @Valid PaymentRequest paymentRequest) {
         if (apiKey == null || apiKey.isEmpty()) {
             throw new IllegalArgumentException("API Key is required");

@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
 
-    public boolean existsByCustomerIdAndOrderIdAndClientId(Long customerId, Long orderId, String clientId);
+    boolean existsByCustomerIdAndOrderIdAndClientId(Long customerId, Long orderId, String clientId);
 
     List<PaymentEntity> findByCustomerId(Long customerId);
 
