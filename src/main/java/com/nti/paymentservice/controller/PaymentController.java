@@ -2,6 +2,7 @@ package com.nti.paymentservice.controller;
 
 import com.nti.paymentservice.dto.PaymentResponse;
 import com.nti.paymentservice.dto.PaymentRequest;
+import com.nti.paymentservice.service.NotificationService;
 import com.nti.paymentservice.service.PaymentManagementService;
 import com.nti.paymentservice.service.PaymentService;
 import com.nti.paymentservice.service.RefundService;
@@ -84,7 +85,7 @@ public class PaymentController {
     }
 
     @GetMapping("/details/{id}")
-    public ResponseEntity<?> getPaymentDetails(
+    public PaymentResponse getPaymentDetails(
             @RequestHeader("apikey") String apiKey,
             @PathVariable @Positive(message = "id must be positive") Long id) {
 
@@ -96,7 +97,6 @@ public class PaymentController {
             throw new ClientNotFoundException("invalid api key");
         }
 
-        PaymentResponse payment = paymentManagementService.getPaymentById(id);
-        return ResponseEntity.ok(payment);
+        return paymentManagementService.getPaymentById(id);
     }
 }

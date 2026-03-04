@@ -18,6 +18,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class PaymentService {
     public final PaymentRepository paymentRepository;
+    private final NotificationService notificationService;
 
     public PaymentEntity createPayment(@RequestBody @Valid PaymentRequest paymentRequest, String apiKey) {
 
@@ -47,6 +48,8 @@ public class PaymentService {
         PaymentEntity payment = paymentRepository.save(paymentEntity);
 
         log.info("payment created id={}", payment.getPaymentId());
+
+        notificationService.send("Successful Payment.", payment.getCustomerId());
 
         return payment;
 
