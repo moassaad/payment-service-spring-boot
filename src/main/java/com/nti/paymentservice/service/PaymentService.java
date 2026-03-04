@@ -47,9 +47,11 @@ public class PaymentService {
 
         PaymentEntity payment = paymentRepository.save(paymentEntity);
 
-        log.info("payment created id={}", payment.getPaymentId());
+        String message = "Successful Payment, amount " + payment.getAmount() + "created at " +  payment.getCreatedAt();
 
-        notificationService.send("Successful Payment.", payment.getCustomerId());
+        log.info(message);
+
+        notificationService.send(message, payment.getCustomerId());
 
         return payment;
 
