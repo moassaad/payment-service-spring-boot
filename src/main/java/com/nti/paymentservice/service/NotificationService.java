@@ -3,6 +3,7 @@ package com.nti.paymentservice.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nti.paymentservice.dto.NotificationRequest;
+import com.nti.paymentservice.dto.NotificationResponse;
 import com.nti.paymentservice.entity.NotificationStatus;
 import com.nti.paymentservice.entity.NotificationChannel;
 
@@ -48,7 +49,8 @@ public class NotificationService {
 
                 HttpEntity<String> entity = new HttpEntity<>(jsonPayload, headers);
 
-                ResponseEntity<String> response = restTemplate.exchange(url + "/notification", HttpMethod.POST, entity, String.class);
+                ResponseEntity<NotificationResponse> response = restTemplate.exchange(url + "/notification", HttpMethod.POST, entity, NotificationResponse.class);
+                log.info("notification sent notification={}", objectMapper.writeValueAsString(response.getBody()));
                 log.info("notification sent");
 
             } catch (JsonProcessingException | HttpServerErrorException exception){
