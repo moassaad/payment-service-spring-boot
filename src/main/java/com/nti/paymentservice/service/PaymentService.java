@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -51,9 +53,18 @@ public class PaymentService {
 
         log.info(message);
 
-        notificationService.send(message, payment.getCustomerId());
+        this.sendNotification(message, payment.getCustomerId());
+//        notificationService.send(message, payment.getCustomerId());
 
         return payment;
 
+    }
+    @Retryable(
+            value = { Exception.class },
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 2000)
+    )
+    private void sendNotification(String message,Long customerId){
+        notificationService.send(message, customerId);
     }
 }
