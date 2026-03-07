@@ -4,6 +4,7 @@ import com.nti.paymentservice.dto.PaymentRequest;
 import com.nti.paymentservice.entity.PaymentEntity;
 import com.nti.paymentservice.entity.PaymentStatus;
 import com.nti.paymentservice.repository.PaymentRepository;
+import com.nti.paymentservice.util.RetryUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,9 +52,14 @@ public class PaymentService {
 
         log.info(message);
 
-        notificationService.send(message, payment.getCustomerId());
 
-        return payment;
+        return RetryUtil.retry(() -> {
+            notificationService.send(message, payment.getCustomerId());
+            return payment;
+        }, 3, 2000);
+//        notificationService.send(message, payment.getCustomerId());
+
+//        return payment;
 
     }
 }
