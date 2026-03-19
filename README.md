@@ -11,6 +11,22 @@
 
 ---
 
+## Resource Diagram
+
+### 1. C4 Context (Main Application Diagram)
+
+![C4 Main Application Diagram](./resources/c4-main-application.png)
+
+### 2. C4 Context (Payment Service Component Diagram)
+
+![Payment Service Component Diagram](./resources/c4-context-diagram.png)
+
+### 3. Entity Diagram
+
+![Entity Diagram](./resources/entity-diagram.png)
+
+---
+
 ## System Architecture
 
 This project is part of a Microservices-based system, where each service is responsible for a specific business domain.
@@ -39,22 +55,6 @@ The system consists of the following services:
 ### Order Service
 
 - Manages orders and order lifecycle.
-
----
-
-## Resource Diagram
-
-### 1. C4 Context (Main Application Diagram)
-
-![C4 Main Application Diagram](./resources/c4-main-application.png)
-
-### 2. C4 Context (Payment Service Component Diagram)
-
-![Payment Service Component Diagram](./resources/c4-context-diagram.png)
-
-### 3. Entity Diagram
-
-![Entity Diagram](./resources/entity-diagram.png)
 
 ---
 
