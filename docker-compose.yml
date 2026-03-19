@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  payment-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: payment-service
+    ports:
+      - "8084:8084"
+    networks:
+      - e-comsys-microservices-net
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SERVER_PORT: 8084
+      SERVICE_NOTIFICATION_SERVICE_URL: http://notification-service:8085/api/v1
+      SERVICE_NOTIFICATION_SERVICE_SECRET_KEY: kdjldehelkdjowugl$awp
+
+networks:
+  e-comsys-microservices-net:
+    external: true

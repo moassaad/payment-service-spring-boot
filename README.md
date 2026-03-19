@@ -11,7 +11,117 @@
 
 ---
 
-## Starting
+## System Architecture
+
+This project is part of a Microservices-based system, where each service is responsible for a specific business domain.
+The system is designed to be modular, scalable, and easy to maintain.
+
+## Services Overview
+
+The system consists of the following services:
+
+### Payment Service
+
+- Handles payment processing, refunds, and payment status management.
+
+### Notification Service
+
+- Responsible for sending notifications (email, SMS, etc.).
+
+### Inventory Service
+
+- Manages product stock and availability.
+
+### Customer Service
+
+- Handles customer data and profiles.
+
+### Order Service
+
+- Manages orders and order lifecycle.
+
+---
+
+## Resource Diagram
+
+### 1. C4 Context (Main Application Diagram)
+
+![C4 Main Application Diagram](./resources/c4-main-application.png)
+
+### 2. C4 Context (Payment Service Component Diagram)
+
+![Payment Service Component Diagram](./resources/c4-context-diagram.png)
+
+### 3. Entity Diagram
+
+![Entity Diagram](./resources/entity-diagram.png)
+
+---
+
+## Get Started
+
+Follow these steps to run the Payment Service locally:
+
+### Prerequisites
+
+- Docker installed on your machine.
+- API testing tool like Postman or APIDog.
+
+### Service Information
+
+- **Port**: 8084
+- **Database**: H2 (in-memory, embedded)
+- **API Documentation**: Accessible at `http://localhost:8084/ui-swagger.html` after starting the service.
+- **API Testing**: You can export API doc json file from link `http://localhost:8084/v3/api-docs` and import file in _APIDog_ or _Postman_, you can test all endpoints.
+- **Database Console**: Accessible at `http://localhost:8084/h2-console` to view stored data.
+
+### Run with Docker
+
+#### Create New Network
+
+Create new public network to connect the service.
+
+- Don't run this command if you have alrady exists public network name `e-comsys-microservices-net`.
+
+```bash
+docker network create e-comsys-microservices-net
+```
+
+#### Start the Service
+
+From the project root folder, run:
+
+```bash
+docker-compose up -d
+```
+
+This will build the image (if not built already) and start the container.
+
+#### Verify the Service
+
+Check if the container is running:
+
+```bash
+docker-compose ps
+```
+
+#### Stop the Service
+
+To stop and remove containers:
+
+```bash
+docker-compose down
+```
+
+You should see the container payment-service running and mapped to port 8084.
+
+### Test the API
+
+- Use your API client (Postman/APIDog) to test endpoints.
+- Base URL: http://localhost:8084/api/v1
+- API Key required for payment endpoints (if configured).
+
+## API Design
 
 Base URL:
 
@@ -321,15 +431,3 @@ Possible payment statuses:
 - failure
 - pending
 - refunded
-
----
-
-## Resource Images
-
-### 1. C4 Context Diagram
-
-![C4 Context Diagram](./resources/c4-context-diagram.png)
-
-### 2. Entity Diagram
-
-![Entity Diagram](./resources/entity-diagram.png)
