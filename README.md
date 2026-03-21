@@ -39,22 +39,33 @@ The system consists of the following services:
 ### Payment Service
 
 - Handles payment processing, refunds, and payment status management.
+- Repository
+  - GitLab: `https://gitlab.com/moassaad/payment-service-spring-boot-microservice-adai`
+  - GitHub: `https://github.com/moassaad/payment-service-spring-boot-microservice-adai`
 
 ### Notification Service
 
 - Responsible for sending notifications (email, SMS, etc.).
-
-### Inventory Service
-
-- Manages product stock and availability.
-
-### Customer Service
-
-- Handles customer data and profiles.
+- Repository
+  - GitLab: `SOON`
 
 ### Order Service
 
 - Manages orders and order lifecycle.
+- Repository
+  - GitLab: `SOON`
+
+### Inventory Service
+
+- Manages product stock and availability.
+- Repository
+  - GitLab: `SOON`
+
+### Customer Service
+
+- Handles customer data and profiles.
+- Repository
+  - GitLab: `SOON`
 
 ---
 
